@@ -1,117 +1,116 @@
-# 🎮 HoyoLab Auto - GitHub Actions Configurado
+# 🎮 HoyoLab Auto - GitHub Actions Configured
 
-¡Tu bot de HoyoLab está listo para ejecutarse automáticamente en GitHub Actions!
+Your HoyoLab bot is ready to run automatically on GitHub Actions!
 
-## ✅ Estado del Proyecto
+## ✅ Project Status
 
-- ✅ **Script `run_once.js`** - Funcionando correctamente
-- ✅ **Configuración de producción** - Lista con variables de entorno
-- ✅ **GitHub Actions Workflow** - Configurado para ejecución diaria
-- ✅ **Sistema de cookies** - Configurado con placeholders seguros
-- ✅ **Notificaciones** - Telegram y Discord configurados
-- ✅ **Testing local** - Scripts de prueba disponibles
+- ✅ **Script `run_once.js`** - Working correctly
+- ✅ **Production configuration** - Ready with environment variables
+- ✅ **GitHub Actions Workflow** - Configured for daily execution
+- ✅ **Cookie system** - Configured with secure placeholders
+- ✅ **Notifications** - Telegram and Discord configured
+- ✅ **Local testing** - Test scripts available
 
-## 🚀 Próximos Pasos para GitHub
+## 🚀 Next Steps for GitHub
 
-### 1. Subir el código a GitHub
+### 1. Push code to GitHub
 ```bash
 git add .
 git commit -m "Add GitHub Actions workflow for daily HoyoLab check-in"
 git push origin main
 ```
 
-### 2. Configurar GitHub Secrets
-Ve a tu repositorio en GitHub → **Settings** → **Secrets and variables** → **Actions**
+### 2. Configure GitHub Secrets
+Go to your repository on GitHub → **Settings** → **Secrets and variables** → **Actions**
 
-Añade estos secrets:
+Add these secrets:
 
-| Secret Name | Valor | Requerido |
-|-------------|-------|-----------|
-| `HOYOLAB_COOKIE` | Tu cookie completa de HoyoLab | ✅ Sí |
-| `TELEGRAM_BOT_TOKEN` | `1234567890:ABC-DEF1234ghIkl-zyx57W2v1u123ew11` | ⚠️ Opcional |
-| `TELEGRAM_CHAT_ID` | `123456789` | ⚠️ Opcional |
-| `DISCORD_WEBHOOK_URL` | Tu URL de webhook de Discord | ⚠️ Opcional |
+| Secret Name | Value | Required |
+|-------------|-------|----------|
+| `HOYOLAB_COOKIE` | Your complete HoyoLab cookie | ✅ Yes |
+| `TELEGRAM_BOT_TOKEN` | `1234567890:ABC-DEF1234ghIkl-zyx57W2v1u123ew11` | ⚠️ Optional |
+| `TELEGRAM_CHAT_ID` | `123456789` | ⚠️ Optional |
+| `DISCORD_WEBHOOK_URL` | Your Discord webhook URL | ⚠️ Optional |
 
-### 3. Activar GitHub Actions
-- Ve a la pestaña **Actions** en tu repositorio
-- Si está deshabilitado, actívalo
-- - **Todo a las 14:00 UTC** (15:00/16:00 en España)
+### 3. Activate GitHub Actions
+- Go to the **Actions** tab in your repository
+- If disabled, activate it
+- **Everything at 14:00 UTC**
 
-## 🧪 Testing Local
+## 🧪 Local Testing
 
-### Probar configuración de producción:
+### Test production configuration:
 ```bash
 npm run test:production
 ```
 
-### Ejecutar el bot una vez:
+### Run the bot once:
 ```bash
 npm run run:once
 ```
 
-### Probar con variables de entorno:
+### Test with environment variables:
 ```bash
 # Windows PowerShell
-$env:NODE_ENV="production"; $env:HOYOLAB_COOKIE="tu_cookie_aqui"; npm run run:once
+$env:NODE_ENV="production"; $env:HOYOLAB_COOKIE="your_cookie_here"; npm run run:once
 
 # Linux/Mac
-NODE_ENV=production HOYOLAB_COOKIE="tu_cookie_aqui" npm run run:once
+NODE_ENV=production HOYOLAB_COOKIE="your_cookie_here" npm run run:once
 ```
 
-## ⏰ Horario de Ejecución
+## ⏰ Execution Schedule
 
-**Configuración actual:** Diariamente a las 14:00 UTC
-- **España:** 15:00 (invierno) / 16:00 (verano)
+**Current configuration:** Daily at 14:00 UTC
 
-Para cambiar el horario, edita `.github/workflows/daily-checkin.yml`:
+To change the schedule, edit `.github/workflows/daily-checkin.yml`:
 ```yaml
 schedule:
-  - cron: '0 14 * * *'  # Min Hora Día Mes DiaSemana
+  - cron: '0 14 * * *'  # Min Hour Day Month DayOfWeek
 ```
 
-## 📊 Monitoreo
+## 📊 Monitoring
 
 ### GitHub Actions:
-- **Logs:** Pestaña Actions → Workflow run
-- **Artifacts:** Logs guardados por 7 días
-- **Estado:** Éxito/Fallo visible en el repositorio
+- **Logs:** Actions tab → Workflow run
+- **Artifacts:** Logs saved for 7 days
+- **Status:** Success/Failure visible in repository
 
-### Notificaciones:
-- **Telegram:** Mensajes automáticos de check-in
-- **Discord:** Webhooks con resultados detallados
+### Notifications:
+- **Telegram:** Automatic check-in messages
+- **Discord:** Webhooks with detailed results
 
-## 🎯 Funcionalidades Automatizadas
+## 🎯 Automated Features
 
-- ✅ **Check-in diario** en todos los juegos activos
-- ✅ **Redención automática** de códigos nuevos
-- ✅ **Notificaciones** de resultados
-- ✅ **Manejo de errores** y reintentos
-- ✅ **Logs detallados** para debugging
+- ✅ **Daily check-in** for all active games
+- ✅ **Automatic redemption** of new codes
+- ✅ **Result notifications**
+- ✅ **Error handling** and retries
+- ✅ **Detailed logs** for debugging
 
-## 🔧 Juegos Configurados
+## 🔧 Configured Games
 
-| Juego | Estado | Check-in | Códigos |
-|-------|--------|----------|---------|
-| Genshin Impact | ✅ Activo | ✅ Sí | ✅ Sí |
-| Honkai: Star Rail | ✅ Activo | ✅ Sí | ✅ Sí |
-| Zenless Zone Zero | ✅ Activo | ✅ Sí | ✅ Sí |
-| Honkai Impact 3rd | ✅ Activo | ✅ Sí | ❌ No |
-| Tears of Themis | ❌ Inactivo | - | - |
+| Game | Status | Check-in | Codes |
+|------|--------|----------|-------|
+| Genshin Impact | ✅ Active | ✅ Yes | ✅ Yes |
+| Honkai: Star Rail | ✅ Active | ✅ Yes | ✅ Yes |
+| Zenless Zone Zero | ✅ Active | ✅ Yes | ✅ Yes |
+| Honkai Impact 3rd | ✅ Active | ✅ Yes | ❌ No |
+| Tears of Themis | ❌ Inactive | - | - |
 
-## 🔐 Seguridad
+## 🔐 Security
 
-- ✅ **Cookies protegidas** en GitHub Secrets
-- ✅ **No se muestran** en logs públicos
-- ✅ **Configuración separada** para desarrollo/producción
-- ✅ **Variables de entorno** seguras
+- ✅ **Protected cookies** in GitHub Secrets
+- ✅ **Not shown** in public logs
+- ✅ **Separate configuration** for development/production
+- ✅ **Secure environment** variables
 
-## 📝 Archivos Importantes
+## 📝 Important Files
 
-- `run_once.js` - Script principal de ejecución única
-- `config.production.json5` - Configuración para GitHub Actions
-- `.github/workflows/daily-checkin.yml` - Workflow de automatización
-- `GITHUB_ACTIONS_SETUP.md` - Guía detallada de configuración
+- `run_once.js` - Main single execution script
+- `config.production.json5` - Configuration for GitHub Actions
+- `.github/workflows/daily-checkin.yml` - Automation workflow
+- `GITHUB_ACTIONS_SETUP.md` - Detailed configuration guide
 
 ---
 
-**🎉 ¡Tu bot está listo! Sube el código a GitHub y configura los secrets para comenzar.**
+**🎉 Your bot is ready! Push the code to GitHub and configure the secrets to get started.**

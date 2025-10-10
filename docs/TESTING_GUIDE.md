@@ -1,114 +1,113 @@
-# 🚀 Guía de Verificación y Prueba Manual - GitHub Actions
+# 🚀 Manual Verification and Testing Guide - GitHub Actions
 
-## ✅ Verificación de Estado
+## ✅ Status Verification
 
-### 1. **Confirmar que el código está en GitHub**
-- ✅ **Commit realizado:** `Add secure GitHub Actions workflow for HoyoLab automation`
+### 1. **Confirm code is on GitHub**
+- ✅ **Commit made:** `Add secure GitHub Actions workflow for HoyoLab automation`
 - ✅ **Branch:** `main`
-- ✅ **Estado:** Up to date with origin/main
+- ✅ **Status:** Up to date with origin/main
 
-### 2. **Confirmar Secrets configurados**
-- ✅ `HOYOLAB_COOKIE` - Cookie completa de HoyoLab
-- ✅ `TELEGRAM_BOT_TOKEN` - Token del bot de Telegram  
-- ✅ `TELEGRAM_CHAT_ID` - ID del chat de Telegram
-- ✅ `DISCORD_WEBHOOK_URL` - URL del webhook de Discord
+### 2. **Confirm Secrets configured**
+- ✅ `HOYOLAB_COOKIE` - Complete HoyoLab cookie
+- ✅ `TELEGRAM_BOT_TOKEN` - Telegram bot token  
+- ✅ `TELEGRAM_CHAT_ID` - Telegram chat ID
+- ✅ `DISCORD_WEBHOOK_URL` - Discord webhook URL
 
-## 🔍 Cómo Verificar la Action en GitHub
+## 🔍 How to Verify the Action on GitHub
 
-### **Paso 1: Acceder a la sección Actions**
-1. Ve a tu repositorio en GitHub
-2. Haz clic en la pestaña **"Actions"** (al lado de Pull requests)
-3. Deberías ver el workflow **"HoyoLab Auto Daily Check-in"**
+### **Step 1: Access Actions section**
+1. Go to your repository on GitHub
+2. Click on the **"Actions"** tab (next to Pull requests)
+3. You should see the workflow **"HoyoLab Auto Daily Check-in"**
 
-### **Paso 2: Verificar el Workflow**
-- **Nombre:** `HoyoLab Auto Daily Check-in`
-- **Trigger:** Programado para las 14:00 UTC diariamente
-- **Manual:** Disponible botón "Run workflow"
-- **Estado:** Debería aparecer como "No workflows have run yet" (normal si es nuevo)
+### **Step 2: Verify the Workflow**
+- **Name:** `HoyoLab Auto Daily Check-in`
+- **Trigger:** Scheduled for 14:00 UTC daily
+- **Manual:** "Run workflow" button available
+- **Status:** Should appear as "No workflows have run yet" (normal if new)
 
-## 🧪 Ejecutar Prueba Manual
+## 🧪 Run Manual Test
 
-### **Método 1: Desde la interfaz de GitHub**
+### **Method 1: From GitHub interface**
 
-1. **Ve a Actions → HoyoLab Auto Daily Check-in**
-2. **Haz clic en "Run workflow"** (botón verde)
-3. **Selecciona la branch:** `main` 
-4. **Haz clic en "Run workflow"** para confirmar
+1. **Go to Actions → HoyoLab Auto Daily Check-in**
+2. **Click "Run workflow"** (green button)
+3. **Select branch:** `main` 
+4. **Click "Run workflow"** to confirm
 
-### **Método 2: Verificar desde línea de comandos**
+### **Method 2: Verify from command line**
 
 ```powershell
-# Verificar que el workflow está presente
+# Verify workflow is present
 git ls-files .github/workflows/
 
-# Ver el contenido del workflow
+# View workflow content
 Get-Content .github/workflows/daily-checkin.yml
 ```
 
-## 📊 Monitorear la Ejecución
+## 📊 Monitor Execution
 
-### **Durante la ejecución verás:**
-1. **Status:** "In progress" (círculo amarillo girando)
-2. **Logs en tiempo real:** Click en el job para ver detalles
-3. **Duración típica:** 2-5 minutos
+### **During execution you'll see:**
+1. **Status:** "In progress" (yellow spinning circle)
+2. **Real-time logs:** Click on the job to see details
+3. **Typical duration:** 2-5 minutes
 
-### **Pasos que ejecutará:**
-1. ✅ **Checkout repository** - Descargar código
-2. ✅ **Setup Node.js** - Configurar Node.js 20
+### **Steps it will execute:**
+1. ✅ **Checkout repository** - Download code
+2. ✅ **Setup Node.js** - Configure Node.js 20
 3. ✅ **Install dependencies** - `npm ci`
-4. ✅ **Run HoyoLab Auto** - Ejecutar `npm run run:once`
-5. ✅ **Archive logs** - Guardar logs (opcional)
+4. ✅ **Run HoyoLab Auto** - Execute `npm run run:once`
+5. ✅ **Archive logs** - Save logs (optional)
 
-## 🎯 Resultados Esperados
+## 🎯 Expected Results
 
-### **✅ Ejecución Exitosa:**
+### **✅ Successful Execution:**
 - **Status:** Green checkmark ✅
 - **Logs:** "Check-in completed successfully"
-- **Notificaciones:** Mensajes en Telegram y Discord
-- **Duración:** ~2-5 minutos
+- **Notifications:** Messages in Telegram and Discord
+- **Duration:** ~2-5 minutes
 
-### **⚠️ Posibles Problemas:**
-- **Error de cookie:** Verificar `HOYOLAB_COOKIE` en secrets
-- **Error de notificaciones:** Verificar tokens de Telegram/Discord
-- **Timeout:** Red lenta, reintenta en unos minutos
+### **⚠️ Possible Issues:**
+- **Cookie error:** Verify `HOYOLAB_COOKIE` in secrets
+- **Notification errors:** Check Telegram/Discord tokens
+- **Timeout:** Slow network, retry in a few minutes
 
-## 📱 Verificar Notificaciones
+## 📱 Verify Notifications
 
 ### **Telegram:**
-- Busca mensajes del bot en tu chat
-- Formato: "✅ [Genshin Impact] Daily check-in completed!"
+- Look for bot messages in your chat
+- Format: "✅ [Genshin Impact] Daily check-in completed!"
 
 ### **Discord:**
-- Revisa el canal configurado para el webhook
-- Deberías ver embeds con información de check-ins
+- Check the channel configured for the webhook
+- You should see embeds with check-in information
 
-## 🔄 Próximas Ejecuciones Automáticas
+## 🔄 Future Automatic Executions
 
-- **Horario:** Diario a las 14:00 UTC
-- **Tu horario (España):** 15:00 (invierno) / 16:00 (verano)
-- **Frecuencia:** Una vez al día
-- **Logs:** Disponibles por 7 días en GitHub
+- **Schedule:** Daily at 14:00 UTC
+- **Frequency:** Once per day
+- **Logs:** Available for 7 days on GitHub
 
-## 🛠️ Comandos de Depuración Local (Opcional)
+## 🛠️ Local Debug Commands (Optional)
 
-Si quieres probar localmente antes:
+If you want to test locally first:
 
 ```powershell
-# Verificar que funciona en local (usando config.json5)
+# Verify it works locally (using config.json5)
 npm run run:once
 
-# Probar configuración de producción (usando variables de entorno)
-# Solo si tienes las variables configuradas localmente
+# Test production configuration (using environment variables)
+# Only if you have variables configured locally
 $env:NODE_ENV="production"
-$env:HOYOLAB_COOKIE="tu_cookie_aqui"
+$env:HOYOLAB_COOKIE="your_cookie_here"
 npm run run:once
 ```
 
 ---
 
-## 🚀 ¡Listo para la Prueba!
+## 🚀 Ready for Testing!
 
-1. **Ve a GitHub → Actions**
-2. **Busca "HoyoLab Auto Daily Check-in"**
+1. **Go to GitHub → Actions**
+2. **Find "HoyoLab Auto Daily Check-in"**
 3. **Click "Run workflow"**
-4. **¡Observa la magia! ✨**
+4. **Watch the magic! ✨**

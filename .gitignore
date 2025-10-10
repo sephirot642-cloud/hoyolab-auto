@@ -187,4 +187,5 @@ generated-cookie.txt
 diff.sh
 
 # npm
-package-lock.json
+# package-lock.json should be committed for reproducible builds
+# package-lock.json

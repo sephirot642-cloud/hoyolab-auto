@@ -1,87 +1,86 @@
 # HoyoLab Auto - GitHub Actions Setup
 
-Este proyecto está configurado para ejecutarse automáticamente todos los días usando GitHub Actions.
+This project is configured to run automatically every day using GitHub Actions.
 
-## 🔧 Configuración de GitHub Secrets
+## 🔧 GitHub Secrets Configuration
 
-Para que GitHub Actions funcione correctamente, necesitas configurar los siguientes secrets en tu repositorio:
+For GitHub Actions to work correctly, you need to configure the following secrets in your repository:
 
-### Pasos para añadir secrets:
+### Steps to add secrets:
 
-1. Ve a tu repositorio en GitHub
-2. Click en **Settings** (Configuración)
-3. En el menú lateral, click en **Secrets and variables** → **Actions**
-4. Click en **New repository secret**
+1. Go to your repository on GitHub
+2. Click on **Settings**
+3. In the sidebar menu, click on **Secrets and variables** → **Actions**
+4. Click on **New repository secret**
 
-### 📋 Secrets requeridos:
+### 📋 Required secrets:
 
-#### `HOYOLAB_COOKIE` (Requerido)
-La cookie completa de HoyoLab que incluye todos los tokens necesarios:
+#### `HOYOLAB_COOKIE` (Required)
+The complete HoyoLab cookie that includes all necessary tokens:
 ```
 ltuid_v2=YOUR_LTUID; ltoken_v2=YOUR_LTOKEN_V2; ltmid_v2=YOUR_LTMID; cookie_token_v2=YOUR_COOKIE_TOKEN_V2; account_mid_v2=YOUR_ACCOUNT_MID; account_id_v2=YOUR_ACCOUNT_ID
 ```
 
-#### `TELEGRAM_BOT_TOKEN` (Opcional)
-Tu token del bot de Telegram:
+#### `TELEGRAM_BOT_TOKEN` (Optional)
+Your Telegram bot token:
 ```
 1234567890:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 ```
 
-#### `TELEGRAM_CHAT_ID` (Opcional)  
-Tu chat ID de Telegram:
+#### `TELEGRAM_CHAT_ID` (Optional)  
+Your Telegram chat ID:
 ```
 123456789
 ```
 
-#### `DISCORD_WEBHOOK_URL` (Opcional)
-Tu URL de webhook de Discord:
+#### `DISCORD_WEBHOOK_URL` (Optional)
+Your Discord webhook URL:
 ```
 https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN
 ```
 
-## ⏰ Horario de ejecución
+## ⏰ Execution Schedule
 
-El workflow está configurado para ejecutarse diariamente a las **14:00 UTC**:
-- **España (CET):** 15:00 PM (invierno) / 16:00 PM (verano)
-- **Puedes cambiar el horario** editando la línea `cron: '0 14 * * *'` en `.github/workflows/daily-checkin.yml`
+The workflow is configured to run daily at **14:00 UTC**:
+- **You can change the schedule** by editing the line `cron: '0 14 * * *'` in `.github/workflows/daily-checkin.yml`
 
-## 🎯 Funciones automáticas
+## 🎯 Automatic Functions
 
-El sistema ejecutará automáticamente:
+The system will automatically execute:
 
-✅ **Check-in diario** para todos los juegos activos
-✅ **Redención de códigos** nuevos automáticamente  
-✅ **Notificaciones** via Telegram y Discord
-✅ **Logs** de actividad (disponibles por 7 días)
+✅ **Daily check-in** for all active games
+✅ **Code redemption** automatically for new codes  
+✅ **Notifications** via Telegram and Discord
+✅ **Activity logs** (available for 7 days)
 
-## 🚀 Ejecución manual
+## 🚀 Manual execution
 
-También puedes ejecutar el workflow manualmente:
-1. Ve a la pestaña **Actions** en tu repositorio
-2. Selecciona **HoyoLab Auto Daily Check-in**
-3. Click en **Run workflow**
+You can also run the workflow manually:
+1. Go to the **Actions** tab in your repository
+2. Select **HoyoLab Auto Daily Check-in**
+3. Click on **Run workflow**
 
-## 📊 Monitoreo
+## 📊 Monitoring
 
-- Los logs están disponibles en la pestaña **Actions** de tu repositorio
-- Las notificaciones se enviarán a Telegram/Discord según tu configuración
-- Los artifacts con logs se guardan por 7 días
+- Logs are available in the **Actions** tab of your repository
+- Notifications will be sent to Telegram/Discord according to your configuration
+- Log artifacts are saved for 7 days
 
-## 🔒 Seguridad
+## 🔒 Security
 
-- ✅ Las cookies y tokens están almacenados de forma segura en GitHub Secrets
-- ✅ No se muestran en los logs públicos
-- ✅ Solo tu repositorio tiene acceso a estos secrets
+- ✅ Cookies and tokens are stored securely in GitHub Secrets
+- ✅ They are not shown in public logs
+- ✅ Only your repository has access to these secrets
 
-## 🛠️ Desarrollo local
+## 🛠️ Local development
 
-Para desarrollo local, usa:
+For local development, use:
 ```bash
 npm run run:once
 ```
 
-El sistema automáticamente usará `config.json5` para desarrollo local y `config.production.json5` para GitHub Actions.
+The system will automatically use `config.json5` for local development and `config.production.json5` for GitHub Actions.
 
 ---
 
-**⚠️ Importante:** Asegúrate de mantener tus cookies actualizadas. Si cambian, deberás actualizar el secret `HOYOLAB_COOKIE` en GitHub.
+**⚠️ Important:** Make sure to keep your cookies updated. If they change, you'll need to update the `HOYOLAB_COOKIE` secret on GitHub.

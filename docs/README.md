@@ -1,102 +1,105 @@
-# 📚 HoyoLab Auto - Documentación
+# 📚 HoyoLab Auto - Documentation
 
-Bienvenido a la documentación completa de **HoyoLab Auto**, tu sistema automatizado para check-ins y gestión de cuentas de HoyoVerse.
+Welcome to the complete documentation for **HoyoLab Auto**, your automated system for check-ins and HoyoVerse account management.
 
-## 📋 Índice de Documentación
+## 📋 Documentation Index
 
-### 🚀 **Configuración y Despliegue**
-- **[GitHub Actions Setup](GITHUB_ACTIONS_SETUP.md)** - Guía completa para configurar GitHub Actions
-- **[Deployment Ready](DEPLOYMENT_READY.md)** - Lista de verificación antes del despliegue
-- **[Testing Guide](TESTING_GUIDE.md)** - Cómo probar y verificar el funcionamiento
+### 🚀 **Setup and Deployment**
+- **[GitHub Actions Setup](GITHUB_ACTIONS_SETUP.md)** - Complete guide for configuring GitHub Actions
+- **[Deployment Ready](DEPLOYMENT_READY.md)** - Pre-deployment checklist
+- **[Testing Guide](TESTING_GUIDE.md)** - How to test and verify functionality
 
-### 🔒 **Seguridad**
-- **[Security Review](SECURITY_REVIEW.md)** - Auditoría de seguridad y buenas prácticas
+### 🔒 **Security**
+- **[Security Review](SECURITY_REVIEW.md)** - Security audit and best practices
 
-## 🎮 **Características Principales**
+### 🐳 **Docker**
+- **[Docker Info](DOCKER_INFO.md)** - Docker configuration and usage guide
 
-### ✅ **Automatización Completa**
-- **Check-ins diarios** automáticos para todos los juegos de HoyoVerse
-- **Redención automática** de códigos promocionales
-- **Monitoreo de stamina** y recordatorios
-- **Notificaciones** via Telegram y Discord
+## 🎮 **Key Features**
 
-### 🎯 **Juegos Soportados**
-- 🗡️ **Genshin Impact** - Check-ins, códigos, stamina, expediciones
-- 🚂 **Honkai: Star Rail** - Check-ins, códigos, stamina, expediciones  
-- ⚡ **Zenless Zone Zero** - Check-ins, códigos, stamina
-- ⚔️ **Honkai Impact 3rd** - Check-ins automáticos
+### ✅ **Complete Automation**
+- **Daily check-ins** automatic for all HoyoVerse games
+- **Automatic redemption** of promotional codes
+- **Stamina monitoring** and reminders
+- **Notifications** via Telegram and Discord
 
-### 🔔 **Notificaciones Inteligentes**
-- **Telegram Bot** - Mensajes directos con resultados
-- **Discord Webhook** - Embeds elegantes en tu servidor
-- **Recordatorios** - Dailies, weeklies, stamina completa
+### 🎯 **Supported Games**
+- 🗡️ **Genshin Impact** - Check-ins, codes, stamina, expeditions
+- 🚂 **Honkai: Star Rail** - Check-ins, codes, stamina, expeditions  
+- ⚡ **Zenless Zone Zero** - Check-ins, codes, stamina
+- ⚔️ **Honkai Impact 3rd** - Automatic check-ins
 
-## 🛠️ **Configuración Rápida**
+### 🔔 **Smart Notifications**
+- **Telegram Bot** - Direct messages with results
+- **Discord Webhook** - Elegant embeds in your server
+- **Reminders** - Dailies, weeklies, full stamina
 
-### 1. **Configuración Local**
+## 🛠️ **Quick Setup**
+
+### 1. **Local Configuration**
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/hoyolab-auto.git
+# Clone the repository
+git clone https://github.com/your-username/hoyolab-auto.git
 cd hoyolab-auto
 
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Configurar tu config.json5 local
+# Configure your local config.json5
 cp default.config.json5 config.json5
-# Editar config.json5 con tus datos
+# Edit config.json5 with your data
 ```
 
-### 2. **Despliegue en GitHub Actions**
-1. Sube tu código a GitHub
-2. Configura los **GitHub Secrets** necesarios
-3. ¡Disfruta de la automatización! 🎉
+### 2. **GitHub Actions Deployment**
+1. Push your code to GitHub
+2. Configure the required **GitHub Secrets**
+3. Enjoy the automation! 🎉
 
-## 🔧 **Scripts Disponibles**
+## 🔧 **Available Scripts**
 
-| Comando | Descripción |
+| Command | Description |
 |---------|-------------|
-| `npm start` | Ejecutar en modo daemon (continuo) |
-| `npm run run:once` | Ejecución única (ideal para GitHub Actions) |
-| `npm run watch` | Modo desarrollo con auto-reload |
-| `npm run migrate` | Migrar configuración antigua |
-| `npm run test:production` | Probar configuración de producción |
+| `npm start` | Run in daemon mode (continuous) |
+| `npm run run:once` | Single execution (ideal for GitHub Actions) |
+| `npm run watch` | Development mode with auto-reload |
+| `npm run migrate` | Migrate old configuration |
+| `npm run test:production` | Test production configuration |
 
-## 📊 **Monitoreo y Logs**
+## 📊 **Monitoring and Logs**
 
-- **GitHub Actions**: Logs automáticos de cada ejecución
-- **Artifacts**: Historial de logs por 7 días
-- **Notificaciones**: Estado en tiempo real via Telegram/Discord
+- **GitHub Actions**: Automatic logs for each execution
+- **Artifacts**: Log history for 7 days
+- **Notifications**: Real-time status via Telegram/Discord
 
-## 🆘 **Soporte y Troubleshooting**
+## 🆘 **Support and Troubleshooting**
 
-### **Problemas Comunes**
-- **Error de cookie**: Verificar que la cookie esté completa y válida
-- **Error de notificaciones**: Revisar tokens de Telegram/Discord
-- **Builds fallidos**: Comprobar GitHub Secrets
+### **Common Issues**
+- **Cookie error**: Verify cookie is complete and valid
+- **Notification errors**: Check Telegram/Discord tokens
+- **Failed builds**: Verify GitHub Secrets
 
-### **Recursos Útiles**
+### **Useful Resources**
 - **Config Template**: `default.config.json5`
-- **Environment Variables**: Ver archivos de configuración
-- **GitHub Actions Logs**: Para debugging detallado
+- **Environment Variables**: See configuration files
+- **GitHub Actions Logs**: For detailed debugging
 
-## 📅 **Programación Automática**
+## 📅 **Automatic Scheduling**
 
-**Ejecución diaria:** 14:00 UTC (15:00/16:00 España)
-- ✅ Check-ins automáticos
-- ✅ Redención de códigos  
-- ✅ Verificación de stamina
-- ✅ Notificaciones de estado
-
----
-
-## 🌟 **¡Comenzar Ahora!**
-
-1. **Lee**: [GitHub Actions Setup](GITHUB_ACTIONS_SETUP.md)
-2. **Configura**: Tus secrets y variables
-3. **Prueba**: Con [Testing Guide](TESTING_GUIDE.md)
-4. **Disfruta**: De tus check-ins automáticos! 🎮✨
+**Daily execution:** 14:00 UTC
+- ✅ Automatic check-ins
+- ✅ Code redemption  
+- ✅ Stamina verification
+- ✅ Status notifications
 
 ---
 
-*Desarrollado con ❤️ para la comunidad de HoyoVerse*
+## 🌟 **Get Started Now!**
+
+1. **Read**: [GitHub Actions Setup](GITHUB_ACTIONS_SETUP.md)
+2. **Configure**: Your secrets and variables
+3. **Test**: With [Testing Guide](TESTING_GUIDE.md)
+4. **Enjoy**: Your automatic check-ins! 🎮✨
+
+---
+
+*Developed with ❤️ for the HoyoVerse community*
