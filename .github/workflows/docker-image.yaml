@@ -1,9 +1,14 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image (Disabled)
 
+# Disabled - uncomment and configure GHCR_USERNAME and GHCR_TOKEN secrets to enable
+# on:
+#   push:
+#     branches:
+#       - main
+
+# Manual trigger only
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
