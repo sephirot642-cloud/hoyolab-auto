@@ -6,6 +6,8 @@
     "start": "node index.js",
     "watch": "nodemon index.js",
     "migrate": "node convert.js",
+    "run:once": "node run_once.js",
+    "test:production": "node test-production.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "setup:windows": "start setup/config/index.html",

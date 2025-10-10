@@ -1,0 +1,45 @@
+name: HoyoLab Auto Daily Check-in
+
+on:
+  schedule:
+    # Run daily at 14:00 UTC (adjust time as needed)
+    # This is 3:00 PM CET / 4:00 PM CEST
+    - cron: '0 14 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  hoyolab-auto:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run HoyoLab Auto
+      run: npm run run:once
+      env:
+        # Environment variables will be set from GitHub Secrets
+        NODE_ENV: production
+        HOYOLAB_COOKIE: ${{ secrets.HOYOLAB_COOKIE }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      
+    - name: Archive logs (optional)
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: hoyolab-logs-${{ github.run_number }}
+        path: |
+          *.log
+          logs/
+        retention-days: 7
