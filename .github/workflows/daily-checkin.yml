@@ -55,10 +55,10 @@ jobs:
                   },
                   {
                       id: 2,
-                      active: ${{ secrets.TELEGRAM_TOKEN != '' && 'true' || 'false' }},
+                      active: ${{ secrets.TELEGRAM_BOT_TOKEN != '' && 'true' || 'false' }},
                       type: 'telegram',
                       chatId: ${{ secrets.TELEGRAM_CHAT_ID || '0' }},
-                      token: '${{ secrets.TELEGRAM_TOKEN }}',
+                      token: '${{ secrets.TELEGRAM_BOT_TOKEN }}',
                       disableNotification: false,
                   },
                   {
@@ -82,9 +82,9 @@ jobs:
               accounts: [
                   {
                       id: 1,
-                      active: ${{ secrets.COOKIE_HONKAI != '' && 'true' || 'false' }},
+                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
                       type: 'honkai',
-                      data: [{ cookie: '${{ secrets.COOKIE_HONKAI }}' }],
+                      data: [{ cookie: '${{ secrets.HOYOLAB_COOKIE }}' }],
                   },
                   {
                       id: 2,
@@ -94,10 +94,10 @@ jobs:
                   },
                   {
                       id: 3,
-                      active: ${{ secrets.COOKIE_GENSHIN != '' && 'true' || 'false' }},
+                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
                       type: 'genshin',
                       data: [{
-                          cookie: '${{ secrets.COOKIE_GENSHIN }}',
+                          cookie: '${{ secrets.HOYOLAB_COOKIE }}',
                           redeemCode: true,
                           dailiesCheck: true,
                           weekliesCheck: true,
@@ -109,10 +109,10 @@ jobs:
                   },
                   {
                       id: 4,
-                      active: ${{ secrets.COOKIE_STARRAIL != '' && 'true' || 'false' }},
+                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
                       type: 'starrail',
                       data: [{
-                          cookie: '${{ secrets.COOKIE_STARRAIL }}',
+                          cookie: '${{ secrets.HOYOLAB_COOKIE }}',
                           redeemCode: true,
                           dailiesCheck: true,
                           weekliesCheck: true,
@@ -124,10 +124,10 @@ jobs:
                   },
                   {
                       id: 5,
-                      active: ${{ secrets.COOKIE_ZENLESS != '' && 'true' || 'false' }},
+                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
                       type: 'zenless',
                       data: [{
-                          cookie: '${{ secrets.COOKIE_ZENLESS }}',
+                          cookie: '${{ secrets.HOYOLAB_COOKIE }}',
                           redeemCode: true,
                           shopStatus: false,
                           dailiesCheck: true,
