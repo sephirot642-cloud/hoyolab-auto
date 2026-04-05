@@ -1,15 +1,12 @@
-name: Build and Push Docker Image (Disabled)
+name: Build and Push Docker Image
 
-# Disabled - uncomment and configure GHCR_USERNAME and GHCR_TOKEN secrets to enable
-# on:
+# Requires GitHub Secrets: GHCR_USERNAME and GHCR_TOKEN
+# To enable automatic builds on push, change workflow_dispatch to:
 #   push:
-#     branches:
-#       - main
+#     branches: [main]
 
-# Manual trigger only
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:  # Manual trigger only — no automatic builds
 
 jobs:
   build:
