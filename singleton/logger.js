@@ -35,6 +35,31 @@ class Logger {
 				new transports.Console({
 					stderrLevels: ["error"],
 					colorize: true
+				}),
+				new transports.File({
+					filename: "logs/error.log",
+					level: "error",
+					format: combine(
+						timestamp({
+							format: "YYYY-MM-DD HH:mm:ss"
+						}),
+						printf(({ level, message, timestamp }) => {
+							const sendTarget = `<${level}:${message.type}> ${message.text}`;
+							return `${timestamp} ${sendTarget}`;
+						})
+					)
+				}),
+				new transports.File({
+					filename: "logs/combined.log",
+					format: combine(
+						timestamp({
+							format: "YYYY-MM-DD HH:mm:ss"
+						}),
+						printf(({ level, message, timestamp }) => {
+							const sendTarget = `<${level}:${message.type}> ${message.text}`;
+							return `${timestamp} ${sendTarget}`;
+						})
+					)
 				})
 			]
 		});
@@ -70,7 +95,8 @@ class Logger {
 	}
 
 	warn (type, text) {
-		this.winstonLogger.warn(this.formatMessage(type, text));
+		const target = (typeof text === "object") ? util.inspect(text) : text;
+		this.winstonLogger.warn(this.formatMessage(type, target));
 	}
 
 	debug (type, text) {

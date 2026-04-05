@@ -9,9 +9,7 @@ module.exports = {
 	expression: "* * * * *",
 	description: "Check and redeem codes for supported games from HoyoLab.",
 	code: async function codeRedeem () {
-		const accountData = app.HoyoLab.getActiveAccounts({
-			blacklist: ["honkai", "tot"]
-		});
+		const accountData = app.HoyoLab.getActiveAccounts();
 
 		if (accountData.length === 0) {
 			app.Logger.info("No active accounts found");
@@ -39,38 +37,46 @@ module.exports = {
 			return;
 		}
 
-		const { success, failed } = result;
-		if (success.length === 0 && failed.length === 0) {
+		const { success, failed, manual } = result;
+		if (success.length === 0 && failed.length === 0 && manual.length === 0) {
 			return;
 		}
 
-		const telegram = app.Platform.get(2);
-		const webhook = app.Platform.get(3);
+		for (const data of success) {
+			const message = buildMessage("success", data);
+			const platforms = app.Platform.getForAccount(data.account);
+			const escapedMessage = app.Utils.escapeCharacters(message.telegram);
 
-		if (telegram) {
-			for (const data of success) {
-				const message = buildMessage(true, data);
-				const escapedMessage = app.Utils.escapeCharacters(message.telegram);
-
+			for (const telegram of platforms.filter(p => p.name === "telegram")) {
 				await telegram.send(escapedMessage);
 			}
-
-			for (const data of failed) {
-				const message = buildMessage(false, data);
-				const escapedMessage = app.Utils.escapeCharacters(message.telegram);
-
-				await telegram.send(escapedMessage);
+			for (const webhook of platforms.filter(p => p.name === "webhook")) {
+				await webhook.send(message.embed);
 			}
 		}
 
-		if (webhook) {
-			for (const data of success) {
-				const message = buildMessage(true, data);
+		for (const data of failed) {
+			const message = buildMessage("failed", data);
+			const platforms = app.Platform.getForAccount(data.account);
+			const escapedMessage = app.Utils.escapeCharacters(message.telegram);
+
+			for (const telegram of platforms.filter(p => p.name === "telegram")) {
+				await telegram.send(escapedMessage);
+			}
+			for (const webhook of platforms.filter(p => p.name === "webhook")) {
 				await webhook.send(message.embed);
 			}
+		}
 
-			for (const data of failed) {
-				const message = buildMessage(false, data);
+		// manual entries are game-level (no account), so send to all platforms
+		for (const data of manual) {
+			const message = buildMessage("manual", data);
+			const escapedMessage = app.Utils.escapeCharacters(message.telegram);
+
+			for (const telegram of app.Platform.list.filter(p => p.name === "telegram")) {
+				await telegram.send(escapedMessage);
+			}
+			for (const webhook of app.Platform.list.filter(p => p.name === "webhook")) {
 				await webhook.send(message.embed);
 			}
 		}

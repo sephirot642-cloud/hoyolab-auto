@@ -63,7 +63,8 @@ module.exports = class HoyoLab {
 				const ltuid = account.cookie.match(/ltuid(?:|_v2)=([^;]+)/)[1];
 				this.#data.push({
 					cookie: parsedCookie.cookie,
-					ltuid
+					ltuid,
+					allowedPlatforms: account.allowedPlatforms ?? null
 				});
 				break;
 			}
@@ -177,7 +178,10 @@ module.exports = class HoyoLab {
 				weekliesCheck,
 				stamina,
 				expedition,
-				discord: account.discord ?? null
+				mimo: account.mimo,
+				hilichurl: account.hilichurl,
+				discord: account.discord ?? null,
+				allowedPlatforms: account.allowedPlatforms ?? null
 			});
 		}
 
