@@ -24,7 +24,10 @@ on:
 jobs:
   daily-tasks:
     runs-on: ubuntu-latest
-    timeout-minutes: 15     # Kill if it hangs (network issues, API down, etc.)
+    timeout-minutes: 15
+    # Opt into Node.js 24 for GitHub Actions runners (suppresses Node 20 deprecation warning)
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: 📥 Checkout repository
@@ -39,107 +42,14 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci --omit=dev
 
-      - name: 🔧 Build configuration from secrets
-        run: |
-          cat > config.json5 << 'ENDOFCONFIG'
-          {
-              loglevel: 'info',
-              userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-              platforms: [
-                  {
-                      id: 1,
-                      active: false,
-                      type: 'discord',
-                      botId: '123',
-                      token: 'placeholder',
-                  },
-                  {
-                      id: 2,
-                      active: ${{ secrets.TELEGRAM_BOT_TOKEN != '' && 'true' || 'false' }},
-                      type: 'telegram',
-                      chatId: ${{ secrets.TELEGRAM_CHAT_ID || '0' }},
-                      token: '${{ secrets.TELEGRAM_BOT_TOKEN }}',
-                      disableNotification: false,
-                  },
-                  {
-                      id: 3,
-                      active: ${{ secrets.DISCORD_WEBHOOK_URL != '' && 'true' || 'false' }},
-                      type: 'webhook',
-                      url: '${{ secrets.DISCORD_WEBHOOK_URL }}',
-                  },
-              ],
-              crons: {
-                  whitelist: [],
-                  blacklist: [],
-                  checkIn: '0 0 0 * * *',
-                  codeRedeem: '*/15 * * * *',
-                  expedition: '0 */30 * * * *',
-                  missedCheckIn: '0 0 23 * * *',
-                  realmCurrency: '0 */1 * * *',
-                  shopStatus: '0 */1 * * *',
-                  stamina: '0 */30 * * * *'
-              },
-              accounts: [
-                  {
-                      id: 1,
-                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
-                      type: 'honkai',
-                      data: [{ cookie: '${{ secrets.HOYOLAB_COOKIE }}' }],
-                  },
-                  {
-                      id: 2,
-                      active: false,
-                      type: 'termis',
-                      data: [{ cookie: '' }]
-                  },
-                  {
-                      id: 3,
-                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
-                      type: 'genshin',
-                      data: [{
-                          cookie: '${{ secrets.HOYOLAB_COOKIE }}',
-                          redeemCode: true,
-                          dailiesCheck: true,
-                          weekliesCheck: true,
-                          realm: { check: false, persistent: false },
-                          stamina: { check: false, threshold: 150, persistent: false },
-                          expedition: { check: false, persistent: false },
-                          discord: { userId: null }
-                      }],
-                  },
-                  {
-                      id: 4,
-                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
-                      type: 'starrail',
-                      data: [{
-                          cookie: '${{ secrets.HOYOLAB_COOKIE }}',
-                          redeemCode: true,
-                          dailiesCheck: true,
-                          weekliesCheck: true,
-                          mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: false },
-                          stamina: { check: false, threshold: 230, persistent: false },
-                          expedition: { check: false, persistent: false },
-                          discord: { userId: null }
-                      }],
-                  },
-                  {
-                      id: 5,
-                      active: ${{ secrets.HOYOLAB_COOKIE != '' && 'true' || 'false' }},
-                      type: 'zenless',
-                      data: [{
-                          cookie: '${{ secrets.HOYOLAB_COOKIE }}',
-                          redeemCode: true,
-                          shopStatus: false,
-                          dailiesCheck: true,
-                          mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: false },
-                          stamina: { check: false, threshold: 200, persistent: false },
-                          discord: { userId: null }
-                      }],
-                  },
-              ],
-          }
-          ENDOFCONFIG
-          echo "✅ config.json5 generated from secrets"
+      - name: 🔧 Generate config.json5 from secrets
+        # Secrets are passed as env vars — safe for any special characters in cookie values
+        env:
+          HOYOLAB_COOKIE: ${{ secrets.HOYOLAB_COOKIE }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: node scripts/generate-config.js
 
       - name: 🚀 Run all daily tasks
         run: npm run run:once
@@ -155,4 +65,4 @@ jobs:
             *.log
             logs/
           retention-days: 7
-          if-no-files-found: ignore
+          if-no-files-found: ignore
