@@ -118,7 +118,7 @@ const config = {
                 redeemCode: true,
                 dailiesCheck: true,
                 weekliesCheck: true,
-                mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: false },
+                mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: true },
                 stamina:    { check: false, threshold: 230, persistent: false },
                 expedition: { check: false, persistent: false },
                 discord:    { userId: null }
@@ -133,7 +133,7 @@ const config = {
                 redeemCode: true,
                 shopStatus: false,
                 dailiesCheck: true,
-                mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: false },
+                mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: true },
                 stamina:  { check: false, threshold: 200, persistent: false },
                 discord:  { userId: null }
             }]
