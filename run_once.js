@@ -19,15 +19,17 @@ const Date = require("./object/date.js");
 const Error = require("./object/error.js");
 const RegionalTaskManager = require("./object/regional-task-manager.js");
 
-// Import cron jobs to execute manually
+// Import daily cron tasks to execute manually
 const CheckIn = require("./crons/check-in/index.js");
 const CodeRedeem = require("./crons/code-redeem/index.js");
+const Mimo = require("./crons/mimo/index.js");
+const Hilichurl = require("./crons/hilichurl/index.js");
 
 // Main function to execute everything once
 async function main() {
   try {
     console.log('Starting Hoyolab Auto (single run)...');
-    
+
     const start = process.hrtime.bigint();
 
     // Validate platforms configuration
@@ -118,14 +120,46 @@ async function main() {
     const end = process.hrtime.bigint();
     app.Logger.info("Client", `Initialize completed (${Number(end - start) / 1e6}ms)`);
 
-    // Execute main tasks once
-    app.Logger.info("RunOnce", "Starting daily check-in process...");
-    await CheckIn.code();
-    
-    app.Logger.info("RunOnce", "Starting code redemption process...");
-    await CodeRedeem.code();
+    // ─── DAILY TASKS ────────────────────────────────────────────────────────────
 
-    app.Logger.info("RunOnce", "All tasks completed successfully!");
+    // 1. Daily Check-in (most critical — free rewards)
+    app.Logger.info("RunOnce", "━━━ [1/4] Starting daily check-in...");
+    try {
+      await CheckIn.code();
+    }
+    catch (err) {
+      app.Logger.error("RunOnce", `Check-in failed: ${err.message}`);
+    }
+
+    // 2. Code Redemption (automatic gift codes)
+    app.Logger.info("RunOnce", "━━━ [2/4] Starting code redemption...");
+    try {
+      await CodeRedeem.code();
+    }
+    catch (err) {
+      app.Logger.error("RunOnce", `Code redeem failed: ${err.message}`);
+    }
+
+    // 3. Traveling Mimo (Star Rail / ZZZ mini-game automation)
+    app.Logger.info("RunOnce", "━━━ [3/4] Starting Traveling Mimo automation...");
+    try {
+      await Mimo.code();
+    }
+    catch (err) {
+      app.Logger.error("RunOnce", `Mimo automation failed: ${err.message}`);
+    }
+
+    // 4. Hilichurl Machine Workshop (Genshin Impact daily)
+    app.Logger.info("RunOnce", "━━━ [4/4] Starting Hilichurl Workshop automation...");
+    try {
+      await Hilichurl.code();
+    }
+    catch (err) {
+      app.Logger.error("RunOnce", `Hilichurl automation failed: ${err.message}`);
+    }
+
+    // ── DONE ──────────────────────────────────────────────────────────────────
+    app.Logger.info("RunOnce", "✅ All daily tasks completed!");
     console.log('Execution completed successfully.');
     process.exit(0); // Exit when finished
 

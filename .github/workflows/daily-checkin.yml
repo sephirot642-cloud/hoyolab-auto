@@ -1,45 +1,158 @@
-name: HoyoLab Auto Daily Check-in
+name: HoyoLab Auto — Daily Tasks
+
+# ─────────────────────────────────────────────────────────────────────────────
+# STRATEGY: Run once per day covering ALL daily tasks:
+#   1. Check-in (free daily rewards — most critical)
+#   2. Code redemption (gift codes)
+#   3. Traveling Mimo (HSR / ZZZ mini-game tasks, rewards, lottery)
+#   4. Hilichurl Workshop (Genshin Impact daily tasks)
+#
+# WHY GitHub Actions over VPS for this use case:
+#   • All tasks are "fire and forget" once per day — no persistent process needed
+#   • Stamina/Expedition monitoring would require a VPS (runs every 30 min)
+#     but those are notifications only — no reward loss if skipped
+#   • GH Actions free tier: 2000 min/month. This job: ~3–5 min/day = ~100 min/month ✅
+#
+# SCHEDULE: 01:00 UTC = 03:00 CET / 04:00 CEST (after midnight server reset)
+# ─────────────────────────────────────────────────────────────────────────────
 
 on:
   schedule:
-    # Run daily at 14:00 UTC (adjust time as needed)
-    # This is 3:00 PM CET / 4:00 PM CEST
-    - cron: '0 14 * * *'
-  workflow_dispatch: # Allow manual triggering
+    - cron: '0 1 * * *'   # 01:00 UTC daily — after HoyoLab midnight reset
+  workflow_dispatch:        # Allow manual trigger at any time
 
 jobs:
-  hoyolab-auto:
+  daily-tasks:
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 15     # Kill if it hangs (network issues, API down, etc.)
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Run HoyoLab Auto
-      run: npm run run:once
-      env:
-        # Environment variables will be set from GitHub Secrets
-        NODE_ENV: production
-        HOYOLAB_COOKIE: ${{ secrets.HOYOLAB_COOKIE }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      
-    - name: Archive logs (optional)
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: hoyolab-logs-${{ github.run_number }}
-        path: |
-          *.log
-          logs/
-        retention-days: 7
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --omit=dev
+
+      - name: 🔧 Build configuration from secrets
+        run: |
+          cat > config.json5 << 'ENDOFCONFIG'
+          {
+              loglevel: 'info',
+              userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+              platforms: [
+                  {
+                      id: 1,
+                      active: false,
+                      type: 'discord',
+                      botId: '123',
+                      token: 'placeholder',
+                  },
+                  {
+                      id: 2,
+                      active: ${{ secrets.TELEGRAM_TOKEN != '' && 'true' || 'false' }},
+                      type: 'telegram',
+                      chatId: ${{ secrets.TELEGRAM_CHAT_ID || '0' }},
+                      token: '${{ secrets.TELEGRAM_TOKEN }}',
+                      disableNotification: false,
+                  },
+                  {
+                      id: 3,
+                      active: ${{ secrets.DISCORD_WEBHOOK_URL != '' && 'true' || 'false' }},
+                      type: 'webhook',
+                      url: '${{ secrets.DISCORD_WEBHOOK_URL }}',
+                  },
+              ],
+              crons: {
+                  whitelist: [],
+                  blacklist: [],
+                  checkIn: '0 0 0 * * *',
+                  codeRedeem: '*/15 * * * *',
+                  expedition: '0 */30 * * * *',
+                  missedCheckIn: '0 0 23 * * *',
+                  realmCurrency: '0 */1 * * *',
+                  shopStatus: '0 */1 * * *',
+                  stamina: '0 */30 * * * *'
+              },
+              accounts: [
+                  {
+                      id: 1,
+                      active: ${{ secrets.COOKIE_HONKAI != '' && 'true' || 'false' }},
+                      type: 'honkai',
+                      data: [{ cookie: '${{ secrets.COOKIE_HONKAI }}' }],
+                  },
+                  {
+                      id: 2,
+                      active: false,
+                      type: 'termis',
+                      data: [{ cookie: '' }]
+                  },
+                  {
+                      id: 3,
+                      active: ${{ secrets.COOKIE_GENSHIN != '' && 'true' || 'false' }},
+                      type: 'genshin',
+                      data: [{
+                          cookie: '${{ secrets.COOKIE_GENSHIN }}',
+                          redeemCode: true,
+                          dailiesCheck: true,
+                          weekliesCheck: true,
+                          realm: { check: false, persistent: false },
+                          stamina: { check: false, threshold: 150, persistent: false },
+                          expedition: { check: false, persistent: false },
+                          discord: { userId: null }
+                      }],
+                  },
+                  {
+                      id: 4,
+                      active: ${{ secrets.COOKIE_STARRAIL != '' && 'true' || 'false' }},
+                      type: 'starrail',
+                      data: [{
+                          cookie: '${{ secrets.COOKIE_STARRAIL }}',
+                          redeemCode: true,
+                          dailiesCheck: true,
+                          weekliesCheck: true,
+                          mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: false },
+                          stamina: { check: false, threshold: 230, persistent: false },
+                          expedition: { check: false, persistent: false },
+                          discord: { userId: null }
+                      }],
+                  },
+                  {
+                      id: 5,
+                      active: ${{ secrets.COOKIE_ZENLESS != '' && 'true' || 'false' }},
+                      type: 'zenless',
+                      data: [{
+                          cookie: '${{ secrets.COOKIE_ZENLESS }}',
+                          redeemCode: true,
+                          shopStatus: false,
+                          dailiesCheck: true,
+                          mimo: { check: true, jitter: 0, lottery: true, reservePoints: 0, redeemDraw: false },
+                          stamina: { check: false, threshold: 200, persistent: false },
+                          discord: { userId: null }
+                      }],
+                  },
+              ],
+          }
+          ENDOFCONFIG
+          echo "✅ config.json5 generated from secrets"
+
+      - name: 🚀 Run all daily tasks
+        run: npm run run:once
+        env:
+          NODE_ENV: production
+
+      - name: 📋 Upload logs (always, even on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hoyolab-logs-${{ github.run_number }}
+          path: |
+            *.log
+            logs/
+          retention-days: 7
+          if-no-files-found: ignore
