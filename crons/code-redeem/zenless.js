@@ -48,6 +48,22 @@ const fetchData = async () => {
 };
 
 const redeemCodes = async (accountData, code) => {
+	if (!accountData.cookie.includes("cookie_token=")) {
+		try {
+			const platform = app.HoyoLab.get("zenless");
+			if (platform) {
+				const refreshCookie = await platform.updateCookie(accountData);
+				if (refreshCookie?.success && refreshCookie?.data) {
+					const { accountId, token } = refreshCookie.data;
+					accountData.cookie = `${accountData.cookie}; cookie_token=${token}; account_id=${accountId}`;
+				}
+			}
+		}
+		catch (e) {
+			app.Logger.debug("CodeRedeem:Zenless", `Failed to fetch cookie_token: ${e.message}`);
+		}
+	}
+
 	const Cookie = app.HoyoLab.parseCookie(accountData.cookie, {
 		whitelist: ["cookie_token_v2", "account_mid_v2", "account_id_v2", "cookie_token", "account_id"]
 	});

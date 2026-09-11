@@ -7,6 +7,19 @@ module.exports = class RedeemCode {
 	}
 
 	async redeemCode (accountData, code) {
+		if (!accountData.cookie.includes("cookie_token=")) {
+			try {
+				const refreshCookie = await this.#instance.updateCookie(accountData);
+				if (refreshCookie?.success && refreshCookie?.data) {
+					const { accountId, token } = refreshCookie.data;
+					accountData.cookie = `${accountData.cookie}; cookie_token=${token}; account_id=${accountId}`;
+				}
+			}
+			catch (e) {
+				app.Logger.debug(`${this.#instance.fullName}:RedeemCode`, `Failed to fetch cookie_token: ${e.message}`);
+			}
+		}
+
 		const cookieData = app.HoyoLab.parseCookie(accountData.cookie, {
 			whitelist: [
 				"cookie_token_v2",

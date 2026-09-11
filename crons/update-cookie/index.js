@@ -12,7 +12,7 @@ module.exports = {
 		for (const account of accounts) {
 			const platform = app.HoyoLab.get(account.platform);
 			const refreshCookie = await platform.updateCookie(account);
-			if (!refreshCookie) {
+			if (!refreshCookie || !refreshCookie.success || !refreshCookie.data) {
 				continue;
 			}
 
@@ -22,7 +22,9 @@ module.exports = {
 
 			const { accountId, token } = refreshCookie.data;
 			account.cookie = `${cookieData}; cookie_token=${token}; account_id=${accountId}`;
-			platform.update(account);
+			if (typeof platform.update === "function") {
+				platform.update(account);
+			}
 		}
 
 		app.Logger.debug("Cron:UpdateCookie", "Updated cookie for all accounts");
