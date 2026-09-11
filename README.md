@@ -21,6 +21,7 @@ A multi-purpose tool for any supported Hoyoverse games. This tool is designed to
   - [Features](#features)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+    - [Language](#language)
     - [Cache File Location](#cache-file-location)
   - [Migration](#migration)
   - [Usage](#usage)
@@ -31,7 +32,7 @@ A multi-purpose tool for any supported Hoyoverse games. This tool is designed to
 
 ## Google App Script
 If you don't have a server to run this script and simply just want to use it for checking in, you can use Google App Script.
-  - [Google App Script](https://github.com/torikushiii/hoyolab-auto/tree/main/services)
+  - [Google App Script](./services/google-script/README.md)
 
 ## Supported Games
 - [x] Honkai Impact 3rd (Daily Check-In only)
@@ -105,6 +106,20 @@ If you don't have a server to run this script and simply just want to use it for
    ```bash
    npm start
    ```
+
+### Language
+
+The Node.js application defaults to `en-us`. Set the top-level `language` option in
+`config.json5` to another lowercase HoYoLAB locale, for example:
+
+```json5
+language: 'it-it',
+```
+
+This sets the existing HoYoLAB language headers and locale fields used by diaries,
+Genshin code redemption, Mimo, and Hilichurl. Genshin daily check-in requests
+(`info`, `home`, and `sign`) also use this locale in their `lang` query parameter.
+The setup generator supports importing and exporting this option.
 
 ### Cache File Location
 
