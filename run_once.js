@@ -20,7 +20,6 @@ const Error = require("./object/error.js");
 const RegionalTaskManager = require("./object/regional-task-manager.js");
 
 // Import daily cron tasks to execute manually
-const UpdateCookie = require("./crons/update-cookie/index.js");
 const CheckIn = require("./crons/check-in/index.js");
 const CodeRedeem = require("./crons/code-redeem/index.js");
 const Mimo = require("./crons/mimo/index.js");
@@ -122,15 +121,6 @@ async function main() {
     app.Logger.info("Client", `Initialize completed (${Number(end - start) / 1e6}ms)`);
 
     // ─── DAILY TASKS ────────────────────────────────────────────────────────────
-
-    // 0. Update Cookies (fetch cookie_token & account_id required for code redemption)
-    app.Logger.info("RunOnce", "━━━ [0/4] Updating account cookies...");
-    try {
-      await UpdateCookie.code();
-    }
-    catch (err) {
-      app.Logger.error("RunOnce", `Update cookie failed: ${err.message}`);
-    }
 
     // 1. Daily Check-in (most critical — free rewards)
     app.Logger.info("RunOnce", "━━━ [1/4] Starting daily check-in...");

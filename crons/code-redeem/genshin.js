@@ -48,7 +48,7 @@ const fetchData = async () => {
 };
 
 const redeemCodes = async (accountData, code) => {
-	if (!accountData.cookie.includes("cookie_token=")) {
+	if (!accountData.cookie.includes("cookie_token=") && !accountData.cookie.includes("cookie_token_v2=")) {
 		try {
 			const platform = app.HoyoLab.get("genshin");
 			if (platform) {

@@ -7,7 +7,7 @@ module.exports = class RedeemCode {
 	}
 
 	async redeemCode (accountData, code) {
-		if (!accountData.cookie.includes("cookie_token=")) {
+		if (!accountData.cookie.includes("cookie_token=") && !accountData.cookie.includes("cookie_token_v2=")) {
 			try {
 				const refreshCookie = await this.#instance.updateCookie(accountData);
 				if (refreshCookie?.success && refreshCookie?.data) {
